@@ -1,6 +1,7 @@
 # Group 1: Christopher Hochgesang, Tanner Holeton, Joseph Hollenbach and Gheleb Netabai
 # SDEV 220 Final Project
 #TODO ADD DESCRIPTION OF WHAT THE PROGRAM DOES
+#TODO ADD A MANAGER VIEW THAT MANAGES EMPLOYEE NAMES AND EMPLOYEE NUMBERS IN THE DATABASE
 
 import datetime
 import sqlite3
