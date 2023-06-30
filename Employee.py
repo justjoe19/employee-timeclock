@@ -1,4 +1,4 @@
-# Group 1 (Christopher Hochgesang, Tanner Holeton, Joseph Hollenbach and Gheleb Netabai)
+# Group 1: Christopher Hochgesang, Tanner Holeton, Joseph Hollenbach and Gheleb Netabai
 # SDEV 220 Final Project
 #TODO ADD DESCRIPTION OF WHAT THE PROGRAM DOES
 
