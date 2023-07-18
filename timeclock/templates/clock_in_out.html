@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{% 'css/clock_in_out.css' %}">
     <title>Clock In/Out</title>
 </head>
 <body>
-    <h1>Clock In/Out</h1>
+        <header class="page-header">
+                <h1>Clock In/Out</h1>
+        </header>
     {% if messages %}
         {% for message in messages %}
             <p class="success-message">{{ message }}</p>
