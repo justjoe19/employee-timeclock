@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -18,10 +19,7 @@
       class="container-fluid d-flex justify-content-center align-items-center vh-25"
     >
       <img
-        src="https://pouch.jumpshare.com/preview/mL7Q2qpssw80XxtfuhzOE8E4mk0XF6SXnlm6zX1f4aTXPUik0rvLrrcmBq2nDzNuHMK65gcRZYeLU3RYuTxB_DJprjKJn4snkOQIlHyX-Do"
-        class="w-100 p-4"
-        alt="Responsive image"
-      />
+        src="{% static 'header.jpeg' %}" class="img-fluid">
     </header>
     <div
       class="container d-flex justify-content-center align-items-center mt-5"
@@ -43,6 +41,7 @@
               <input
                 type="text"
                 class="form-control text-center"
+                style="max-width: 50%; margin-left: auto; margin-right: auto;"
                 name="employee_id"
                 placeholder="Employee ID"
                 id="employee_id"
