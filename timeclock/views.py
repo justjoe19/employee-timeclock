@@ -17,9 +17,9 @@ def clock_in_out(request):
             except Employee.DoesNotExist:
                 messages.error(request, "Invalid employee number")
             else:
-                employed = request.POST.get("employed")
+                employed = employee.employed
 
-                if employed == "True":
+                if employed == True:
                     employee.punch()
                     punch_type = "Clock Out" if employee.is_clocked_in() else "Clock In"
                     current_time = datetime.datetime.now().strftime("%H:%M:%S")
