@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Employee, LOA
@@ -6,13 +5,6 @@ from .forms import TimeOffRequestForm
 import datetime
 
 
-=======
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import Employee
-import datetime
-
->>>>>>> Joe
 def clock_in_out(request):
     if request.method == 'POST':
         employee_id = request.POST.get("employee_id")
@@ -25,7 +17,6 @@ def clock_in_out(request):
             except Employee.DoesNotExist:
                 messages.error(request, "Invalid employee number")
             else:
-<<<<<<< HEAD
                 employed = employee.employed
 
                 if employed == True:
@@ -123,12 +114,3 @@ def approve_deny_time_off_request(request, loa_id):
             return redirect('home')  # Assuming you have a URL name for the home page
 
     return render(request, 'PLACEHOLDERtimeoff_approved.html', {'loa': loa}) # Replace 'PLACEHOLDERtimeoff_approved.html' with whichever appropriate template name
-=======
-                employee.punch()
-                punch_type = "Clock Out" if employee.is_clocked_in() else "Clock In"
-                current_time = datetime.datetime.now().strftime("%H:%M:%S")
-                messages.success(request, f"{employee.name}, your {punch_type.lower()} is at {current_time}")
-                return redirect('home')  # Assuming you have a URL name for the home page
-
-    return render(request, 'clock_in_out.html')
->>>>>>> Joe
