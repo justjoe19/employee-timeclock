@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.postgres.fields import DateRangeField
 
 class Employee(models.Model):
     employee_id = models.IntegerField(unique=True)
@@ -26,3 +27,11 @@ class Punch(models.Model):
     punch_time = models.DateTimeField()
     punch_type = models.CharField(max_length=20)
 
+class LOA(models.Model):
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='leave_requests')
+    request = DateRangeField()
+    time_submitted = models.DateTimeField()
+    approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"LOA Request #{self.id} for {self.employee.name}"

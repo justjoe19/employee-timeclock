@@ -19,6 +19,9 @@ from django.urls import path
 from timeclock.views import clock_in_out
 from django.views.generic import RedirectView
 
+admin.site.site_header = "Acme, Inc."
+admin.site.site_title = "Acme, Inc."
+
 
 urlpatterns = [
     path('', clock_in_out, name='home'),
