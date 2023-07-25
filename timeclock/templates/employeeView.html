@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clock In/Out</title>
+</head>
+<body>
+    <h1>haha</h1>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="success-message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form method="post" action="{% url 'employee_view' %}">
+        {% csrf_token %}
+        <label for="employee_id">Employee ID:</label>
+        <input type="text" name="employee_id" id="employee_id" required>
+        <button type="submit">View Clock History</button>
+    </form>
+    {%if punches%}
+    <table>
+        <tr>
+            <th>Employee</th>
+            <th>Clock in time</th>
+            <th>Clock Out Time</th>
+        </tr>
+    {%for punch in punches%}
+        {%if punch.punch_type == "Clock In"%}
+            <tr>
+            <td>Employee name</td>
+            <td>{{punch.punch_time}}</td>
+        {%else%}
+            <td>{{punch.punch_time}}</td>
+            </tr>
+        {%endif%}
+    {%endfor%}
+    </tr>
+    </table>
+    {%endif%}
+
+</body>
+</html>

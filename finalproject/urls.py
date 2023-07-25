@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from timeclock.views import clock_in_out
+from timeclock.views import clock_in_out,employee_view
 from django.views.generic import RedirectView
 
 
@@ -24,5 +24,6 @@ urlpatterns = [
     path('', clock_in_out, name='home'),
     path('admin/', admin.site.urls),
     path('redirect/', RedirectView.as_view(pattern_name='home', permanent=False)),
+    path("employeeView/test",employee_view,name="employee_view")
 ]
 
