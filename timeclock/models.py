@@ -5,6 +5,8 @@ from django.contrib.postgres.fields import DateRangeField
 class Employee(models.Model):
     employee_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=100, default='')
+    employed = models.BooleanField(default=True)
+    pto = models.DecimalField(default=0, decimal_places=2, max_digits=5)
 
     def is_clocked_in(self):
         latest_punch = self.punches.order_by('-punch_time').first()
@@ -35,3 +37,4 @@ class LOA(models.Model):
 
     def __str__(self):
         return f"LOA Request #{self.id} for {self.employee.name}"
+

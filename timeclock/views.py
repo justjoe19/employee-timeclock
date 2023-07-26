@@ -4,7 +4,6 @@ from .models import Employee, LOA
 from .forms import TimeOffRequestForm
 import datetime
 
-
 def clock_in_out(request):
     if request.method == 'POST':
         employee_id = request.POST.get("employee_id")
@@ -80,7 +79,7 @@ def add_deduct_pto(request, employee_id):
         messages.success(request, f"Successfully {action} {abs(pto_change)} PTO for {employee.name}.")
         return redirect('home')  # Assuming you have a URL name for the home page
 
-    return render(request, 'add_deduct_pto.html', {'employee_id': employee_id})
+    return render(request, 'PLACEHOLDERadd_deduct_pto.html', {'employee_id': employee_id}) # Replace 'PLACEHOLDERadd_deduct_pto.html' with whichever appropriate template name
 
 def submit_time_off_request(request, employee_id):
     employee = get_object_or_404(Employee, employee_id=employee_id)
@@ -95,7 +94,7 @@ def submit_time_off_request(request, employee_id):
     else:
         form = TimeOffRequestForm(instance=LOA(employee=employee))
 
-    return render(request, 'submit_time_off_request.html', {'form': form})
+    return render(request, 'PLACEHOLDERsubmit_time_off_request.html', {'form': form}) # Replace 'PLACEHOLDERsubmit_timeoff_request.html' with whichever appropriate template name
 
 def approve_deny_time_off_request(request, loa_id):
     loa = get_object_or_404(LOA, id=loa_id)

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#!/Users/joemac/JOE/SDEV220-FP/myvenv/bin/python3.11
-=======
 #!/Users/joemac/SDEV220-FP/myvenv/bin/python
->>>>>>> Joe
 # -*- coding: utf-8 -*-
 import re
 import sys
