@@ -18,7 +18,7 @@ def clock_in_out(request):
             except Employee.DoesNotExist:
                 messages.error(request, "Invalid employee number")
             else:
-                employed = employee.employed
+                employed = True
 
                 if employed == True:
                     employee.punch()
@@ -31,32 +31,37 @@ def clock_in_out(request):
 
     return render(request, 'clock_in_out.html')
 def employee_view(request):
-    if request.method == 'POST':
-        employee_id_parameter = request.POST.get("employee_id")
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            employee_id_parameter = request.POST.get("employee_id")
 
-        if not employee_id_parameter.isdigit():
-            messages.error(request, "Invalid employee number")
-        else:
-            try:
-                employee = Employee.objects.get(employee_id=employee_id_parameter)
-            except:
+            if not employee_id_parameter.isdigit():
                 messages.error(request, "Invalid employee number")
+                return render(request,"employeeView.html")
             else:
                 try:
-                    punches = []
-                    for punch in list(Punch.objects.all()):
-                        print(punch.employee_id)
-                        if(punch.employee_id==int(employee.id)):
-                            punches.append(punch)
-                    print(employee_id_parameter,len(punches))
-                    messages.success(request,f"Displaying clock in/out information for {employee.name}")
-                    return render(request,"employeeView.html",{"punches":punches})
-                except Employee.DoesNotExist:
-                    messages.error(request,"Invalid employee number")
+                    employee = Employee.objects.get(employee_id=employee_id_parameter)
+                except:
+                    messages.error(request, "Invalid employee number")
+                    return render(request,"employeeView.html")
                 else:
-                    print("else")
+                    try:
+                        punches = []
+                        for punch in list(Punch.objects.all()):
+                            print(punch.employee_id)
+                            if(punch.employee_id==int(employee.id)):
+                                punches.append(punch)
+                        print(employee_id_parameter,len(punches))
+                        messages.success(request,f"Displaying clock in/out information for {employee.name}")
+                        return render(request,"employeeView.html",{"punches":punches})
+                    except Employee.DoesNotExist:
+                        messages.error(request,"Invalid employee number")
+                    else:
+                        print("else")
+        else:
+            return render(request,"employeeView.html")
     else:
-        return render(request,"employeeView.html")
+         return render(request,"accessDenied.html")
         
 def fire(request, employee_id):
     if request.method == 'POST':

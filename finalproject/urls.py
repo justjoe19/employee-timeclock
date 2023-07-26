@@ -27,6 +27,6 @@ urlpatterns = [
     path('', clock_in_out, name='home'),
     path('admin/', admin.site.urls),
     path('redirect/', RedirectView.as_view(pattern_name='home', permanent=False)),
-    path("employeeView/test",employee_view,name="employee_view")
+    path("employeeView/",employee_view,name="employee_view")
 ]
 
