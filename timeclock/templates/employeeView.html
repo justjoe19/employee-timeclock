@@ -42,9 +42,9 @@
                 {%if punch.punch_type == "Clock In"%}
                     <tr>
                     <td>Employee name</td>
-                    <td>{{punch.punch_time}}</td>
+                    <td><a href="{% url 'admin:timeclock_punch_change' punch.id %}">{{punch.punch_time}}</a></td>
                 {%else%}
-                    <td>{{punch.punch_time}}</td>
+                    <td><a href="{% url 'admin:timeclock_punch_change' punch.id %}">{{punch.punch_time}}</a></td>
                     </tr>
                 {%endif%}
             {%endfor%}
