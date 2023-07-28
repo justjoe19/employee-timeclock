@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.db import models
+from django.utils import timezone
 from .models import Employee, LOA
 from .forms import TimeOffRequestForm
 from .models import Punch
-import datetime
 
+from datetime import datetime
+import requests
+from django.contrib.postgres.fields import DateRangeField
 
 def clock_in_out(request):
     if request.method == 'POST':
@@ -18,14 +22,44 @@ def clock_in_out(request):
             except Employee.DoesNotExist:
                 messages.error(request, "Invalid employee number")
             else:
-                employed = True
+                employed = employee.employed
 
                 if employed == True:
                     employee.punch()
-                    punch_type = "Clock Out" if employee.is_clocked_in() else "Clock In"
-                    current_time = datetime.datetime.now().strftime("%H:%M:%S")
+                    punch_type = "Clock In" if employee.is_clocked_in() else "Clock Out"
+                    current_time = datetime.now().strftime("%H:%M:%S")
                     messages.success(request, f"{employee.name}, your {punch_type.lower()} is at {current_time}")
-                    return redirect('home')  # Assuming you have a URL name for the home page
+                    
+                    punches = []
+                    PTOrequests=[]
+                    if punch_type == "Clock In":
+                        #collect punches for clock history. Wont let user edit them at all.
+                        for punch in list(Punch.objects.all()):
+                            if(punch.employee_id==int(employee.id)):
+                                punches.append(punch)
+                        #gather any submitted time off requests and make them viewable 
+                        #for LOAInstance in list(LOA.objects.all()):
+                            #if LOAInstance.employee==employee:
+                                #PTOrequests.append(LOAInstance)
+                    
+
+                   
+                    #if no punches,no pto requests
+                    if len(PTOrequests)==0 and len(punches)==0:
+                        
+                        return render(request, 'clock_in_out.html')
+                    #there are punches,no pto requests
+                    if len(PTOrequests)==0 and len(punches)>0:
+                        
+                        return render(request, 'clock_in_out.html',{"punches":punches})
+                    #no punches, there are pto requests,
+                    if len(PTOrequests)>0 and len(punches)>0:
+                        
+                        return render(request, 'clock_in_out.html',{"PTO":PTOrequests})
+                    #there are punches and pto requests   
+                    if len(PTOrequests)>0 and len(punches)>0:
+                        
+                        return render(request, 'clock_in_out.html',{"punches":punches},{"PTO":PTOrequests})
                 else:
                     messages.error(request, "Invalid input: Employee number is no longer employed")
 
@@ -48,7 +82,6 @@ def employee_view(request):
                     try:
                         punches = []
                         for punch in list(Punch.objects.all()):
-                            print(punch.employee_id)
                             if(punch.employee_id==int(employee.id)):
                                 punches.append(punch)
                         print(employee_id_parameter,len(punches))
@@ -63,19 +96,22 @@ def employee_view(request):
     else:
          return render(request,"accessDenied.html")
         
-def fire(request, employee_id):
+def fire(request):
     if request.method == 'POST':
         try:
-            employee = Employee.objects.get(employee_id=employee_id)
+            employee = Employee.objects.get(employee_id=request.POST.get("employee_id"))
         except Employee.DoesNotExist:
             messages.error(request, "Invalid employee number")
         else:
             if employee.employed:
-                employee.employed = False
+                employee.employed = not employee.employed
                 employee.save()
+                employee_id=request.POST.get("employee_id")
                 messages.success(request, f"Employee with ID {employee_id} has been fired.")
             else:
-                messages.error(request, "Employee is already not employed.")
+                employee.employed = not employee.employed
+                employee.save()
+                messages.error(request, "Employee was already not employed. They have been re-hired.")
         return redirect('home')  # Assuming you have a URL name for the home page
 
     return render(request, 'PLACEHOLDERfire.html')  # Replace 'PLACEHOLDERfire.html' with whichever appropriate template name

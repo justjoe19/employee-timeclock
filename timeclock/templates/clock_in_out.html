@@ -1,4 +1,3 @@
-#
 {% load static %}
 <!DOCTYPE html>
 <html>
@@ -55,6 +54,45 @@
           </form>
         </div>
       </div>
+      <div>
+        {%if punches%}
+        <table>
+          <tr>
+              <th>Clock in time</th>
+              <th>Clock Out Time</th>
+          </tr>
+          {%for punch in punches%}
+              {%if punch.punch_type == "Clock In"%}
+                  <tr>
+                  <td>{{punch.punch_time}}</td>
+              {%else%}
+                  <td>{{punch.punch_time}}</td>
+                  </tr>
+              {%endif%}
+          {%endfor%}
+          </tr>
+        </table>
+        <!-- you'll have to change this to the relevant url-->
+        <a href = "{%url 'home'%}"> Submit PTO Request</a>
+        {%endif%}
+      </div>
+      
     </div>
+    {%if PTO%}
+      <table>
+        <tr>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Approved</th>
+        </tr>
+      {%for pto in PTO%}
+        <tr>
+          <td>{{pto.}}</td>
+          <td></td>
+          <td></td>
+        </tr>
+      {%endfor%}
+      </table>
+    {%endif%}
   </body>
 </html>

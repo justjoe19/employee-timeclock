@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.postgres.fields import DateRangeField
 
 class Employee(models.Model):
+    employed = models.BooleanField(default=True)
     employee_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=100, default='')
 
