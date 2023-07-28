@@ -7,6 +7,7 @@ from .forms import TimeOffRequestForm
 from .models import Punch
 
 from datetime import datetime
+from datetime import date
 import requests
 from django.contrib.postgres.fields import DateRangeField
 
@@ -38,9 +39,9 @@ def clock_in_out(request):
                             if(punch.employee_id==int(employee.id)):
                                 punches.append(punch)
                         #gather any submitted time off requests and make them viewable 
-                        #for LOAInstance in list(LOA.objects.all()):
-                            #if LOAInstance.employee==employee:
-                                #PTOrequests.append(LOAInstance)
+                        for LOAInstance in list(LOA.objects.all()):
+                            if LOAInstance.employee==employee:
+                                PTOrequests.append(LOAInstance)
                     
 
                    
@@ -53,13 +54,12 @@ def clock_in_out(request):
                         
                         return render(request, 'clock_in_out.html',{"punches":punches})
                     #no punches, there are pto requests,
-                    if len(PTOrequests)>0 and len(punches)>0:
+                    if len(PTOrequests)==0 and len(punches)>0:
                         
                         return render(request, 'clock_in_out.html',{"PTO":PTOrequests})
                     #there are punches and pto requests   
                     if len(PTOrequests)>0 and len(punches)>0:
-                        
-                        return render(request, 'clock_in_out.html',{"punches":punches},{"PTO":PTOrequests})
+                        return render(request, 'clock_in_out.html',{"punches":punches,"PTO":PTOrequests})
                 else:
                     messages.error(request, "Invalid input: Employee number is no longer employed")
 
@@ -81,12 +81,16 @@ def employee_view(request):
                 else:
                     try:
                         punches = []
+                        PTOrequests = []
                         for punch in list(Punch.objects.all()):
                             if(punch.employee_id==int(employee.id)):
                                 punches.append(punch)
+                        for LOAInstance in list(LOA.objects.all()):
+                            if LOAInstance.employee==employee:
+                                PTOrequests.append(LOAInstance)
                         print(employee_id_parameter,len(punches))
                         messages.success(request,f"Displaying clock in/out information for {employee.name}")
-                        return render(request,"employeeView.html",{"punches":punches})
+                        return render(request,"employeeView.html",{"punches":punches,"PTO":PTOrequests})
                     except Employee.DoesNotExist:
                         messages.error(request,"Invalid employee number")
                     else:
@@ -183,3 +187,16 @@ def approve_deny_time_off_request(request, loa_id):
             return redirect('home')  # Assuming you have a URL name for the home page
 
     return render(request, 'PLACEHOLDERtimeoff_approved.html', {'loa': loa}) # Replace 'PLACEHOLDERtimeoff_approved.html' with whichever appropriate template name
+def pto_requests(request):
+    return render(request,"pto_requests.html")
+def submit_pto_request(request):
+    employee = Employee.objects.get(employee_id=request.POST.get("employee_id"))
+    requestStartStrs=request.POST.get("start_date").split("-")
+    requestStart = date(int(requestStartStrs[0]),int(requestStartStrs[1]),int(requestStartStrs[2]))
+    requestEndStrs=request.POST.get("end_date").split("-")
+    requestEnd = date(int(requestEndStrs[0]),int(requestEndStrs[1]),int(requestEndStrs[2]))
+    date_submitted = datetime.today().date()
+    ptoRequest=LOA.objects.create(employee=employee,requestStart=requestStart,requestEnd=requestEnd,date_submitted=date_submitted,approved=False)
+    ptoRequest.save()
+    messages.success(request,"Successfully submitted PTO request.")
+    return render(request, "pto_requests.html")

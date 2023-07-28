@@ -30,8 +30,9 @@ class Punch(models.Model):
 
 class LOA(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='leave_requests')
-    request = DateRangeField()
-    time_submitted = models.DateTimeField()
+    requestStart = models.DateField()
+    requestEnd = models.DateField()
+    date_submitted = models.DateField()
     approved = models.BooleanField(default=False)
 
     def __str__(self):

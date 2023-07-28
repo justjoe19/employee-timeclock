@@ -15,19 +15,21 @@
     
 </head>
 <body>
-
+    <header class="container-fluid d-flex justify-content-center align-items-center vh-25">
+        <a href="{%url 'home'%}"><img src="{% static 'header.jpeg' %}" class="img-fluid" /></a>
+    </header>
     <h2>pto_requests</h2>
     {% if messages %} {% for message in messages %}
           <p class="success-message">{{ message }}</p>
           {% endfor %} {% endif %}
-    <form method="POST" class="post-form" action="{%url 'submit_pto_request' %}">
+    <form method="post" class="post-form" action="{%url 'submit_pto_request' %}">
         {% csrf_token %}
-        <label>Employee ID</label>
-        <input name = employee_id></input>
-        <label>Start Date</label>
-        <input name = "start_date"></input>
-        <label>End Date</label>
-        <input name = "end_date"></input>
+        <label>Your Employee ID</label>
+        <input name = "employee_id" id = "employee_id" required></input>
+        <label>Start Date (YYYY-MM-DD)</label>
+        <input name = "start_date" id = "start_date" required></input>
+        <label>End Date (YYYY-MM-DD)</label>
+        <input name = "end_date" id= "end_date" required></input>
         <button type="submit" class="save btn btn-secondary">Submit PTO Request</button>
     </form>
 </body>

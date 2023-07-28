@@ -16,7 +16,7 @@
 </head>
 <body>
     <headerclass="container-fluid d-flex justify-content-center align-items-center vh-25">
-      <img src="{% static 'header.jpeg' %}" class="img-fluid" />
+        <a href="{%url 'home'%}"><img src="{% static 'header.jpeg' %}" class="img-fluid" /></a>
     </header>
     <div class="container d-flex justify-content-center align-items-center mt-5">
         <h1>Employee clock In/Out Viewer</h1>
@@ -33,7 +33,7 @@
             {% csrf_token %}
             <label for="employee_id">Employee ID:</label>
             <input type="text" name="employee_id" id="employee_id" required>
-            <button type="submit">View Clock History</button>
+            <button type="submit">View Employee History</button>
         </form>
         {%if punches%}
             <table>
@@ -55,6 +55,8 @@
         {%endif%}
         
     </div>
+    <div class = "container d-flex justify-content-center align-items-center mt-5">
+        <h2>Time off requests</h2>
     {%if PTO%}
       <table>
         <tr>
@@ -63,14 +65,15 @@
           <th>Approved</th>
         </tr>
       {%for pto in PTO%}
-        <tr>
-          <td>{{pto.}}</td>
-          <td></td>
-          <td></td>
-        </tr>
+      <tr>
+        <td><a href="{% url 'admin:timeclock_loa_change' pto.id %}">{{pto.requestStart}}</a></td>
+        <td>{{pto.requestEnd}}</td>
+        <td>{{pto.approved}}</td>
+      </tr>
       {%endfor%}
       </table>
     {%endif%}
+    </div>
     {%if messages%}
     <!-- change this to actual URL-->
         <form method="post" action="{%url 'fire'%}">

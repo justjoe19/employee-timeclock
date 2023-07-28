@@ -5,7 +5,7 @@ from .models import LOA
 class TimeOffRequestForm(forms.ModelForm):
     class Meta:
         model = LOA
-        fields = ['request', 'time_submitted']
+        fields = ['date_submitted']
 
     def clean_request(self):
         request = self.cleaned_data['request']

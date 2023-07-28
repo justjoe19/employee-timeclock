@@ -17,7 +17,7 @@
     <header
       class="container-fluid d-flex justify-content-center align-items-center vh-25"
     >
-      <img src="{% static 'header.jpeg' %}" class="img-fluid" />
+      <a href="{%url 'home'%}"><img src="{% static 'header.jpeg' %}" class="img-fluid" /></a>
     </header>
     <div
       class="container d-flex justify-content-center align-items-center mt-5"
@@ -73,12 +73,15 @@
           </tr>
         </table>
         <!-- you'll have to change this to the relevant url-->
-        <a href = "{%url 'home'%}"> Submit PTO Request</a>
+        
         {%endif%}
       </div>
       
     </div>
+    <div class="container d-flex justify-content-center align-items-center mt-5">
+    <a href = "{%url 'pto_requests'%}"> Submit PTO Request</a>
     {%if PTO%}
+    <h2> PTO requests</h2>
       <table>
         <tr>
           <th>Start Date</th>
@@ -87,12 +90,13 @@
         </tr>
       {%for pto in PTO%}
         <tr>
-          <td>{{pto.}}</td>
-          <td></td>
-          <td></td>
+          <td>{{pto.requestStart}}</td>
+          <td>{{pto.requestEnd}}</td>
+          <td>{{pto.approved}}</td>
         </tr>
       {%endfor%}
       </table>
     {%endif%}
+    </div>
   </body>
 </html>
