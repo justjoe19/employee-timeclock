@@ -1,2 +1,2 @@
  [build] 
- command = "python manage.py collectstatic --noinput" publish = "timeclock/templates/clock_in_out.html"
+ command = "python manage.py collectstatic --noinput" publish = "static"
