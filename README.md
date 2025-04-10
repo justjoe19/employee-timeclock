@@ -1,4 +1,4 @@
-# SDEV220-FP
+# employee-timeclock
 
 To run this program, enter the following commands in Terminal:
 
